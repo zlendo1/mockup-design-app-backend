@@ -1,8 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-// Import the JWT secret key from env
-const JWT_SECRET = process.env.JWT_SECRET;
-
 /**
  * This function signs a payload with the JWT secret key.
  * If no options are provided, it will only use the payload and the secret key.
@@ -14,10 +11,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
  */
 function sign(payload, options = null) {
 	if (!options) {
-		return jwt.sign(payload, JWT_SECRET);
+		return jwt.sign(payload, process.env.JWT_SECRET);
 	}
 
-	return jwt.sign(payload, JWT_SECRET, options);
+	return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
 
 /**
@@ -28,7 +25,7 @@ function sign(payload, options = null) {
  * @throws {Error} If the token is not valid.
  */
 function verify(token) {
-	return jwt.verify(token, JWT_SECRET);
+	return jwt.verify(token, process.env.JWT_SECRET);
 }
 
 module.exports = {
