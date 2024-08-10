@@ -33,4 +33,34 @@ async function login(req, res) {
 	}
 }
 
-module.exports = { login };
+async function register(req, res) {
+	const user = req.body;
+
+	try {
+		const foundUser = await db.user.findOne({ where: { username: user.username } });
+
+		if (foundUser) {
+			res.status(400).json({ message: 'User already exists' });
+
+			return;
+		}
+
+		const hashedPassword = await bcrypt.hash(user.password, 10);
+
+		const newUser = await db.user.create({
+			username: user.username,
+			password: hashedPassword
+		});
+
+		const token = generateJwtToken(newUser);
+
+		res.status(201).json({ userId: newUser.id, token: token });
+	} catch (error) {
+		res.status(500).json(generateServerErrorResponse(error));
+	}
+}
+
+module.exports = {
+	login,
+	register
+};
