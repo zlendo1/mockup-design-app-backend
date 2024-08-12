@@ -24,7 +24,7 @@ app.use(cors());
 app.use('/auth', authRoutes);
 app.use('/user', authMiddleware.verifyJWT, userRoutes);
 
-await db.sequelize.sync();
+db.sequelize.sync();
 
 const PORT = process.env.PORT || 3000;
 
