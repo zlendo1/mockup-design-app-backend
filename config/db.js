@@ -1,5 +1,5 @@
-import { Sequelize } from 'sequelize';
-import { PostgresDialect } from '@sequelize/postgres'
+const { Sequelize } = require('sequelize');
+const { PostgresDialect } = require('@sequelize/postgres');
 
 const sequelize = new Sequelize(process.env.POSTGRES_DATABASE, process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD,
 	{
