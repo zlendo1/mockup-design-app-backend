@@ -1,8 +1,13 @@
 import { Sequelize } from 'sequelize';
 import { PostgresDialect } from '@sequelize/postgres'
 
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS,
-	{ host: process.env.DB_HOST, dialect: "postgres", dialectModule: PostgresDialect, logging: false }
+const sequelize = new Sequelize(process.env.POSTGRES_DATABASE, process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD,
+	{
+		host: process.env.POSTGRES_HOST,
+		dialect: "postgres",
+		dialectModule: PostgresDialect,
+		logging: false
+	}
 );
 
 const db = {};
