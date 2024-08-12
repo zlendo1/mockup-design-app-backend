@@ -10,6 +10,7 @@
     "@sequelize/postgres": "^7.0.0-alpha.41",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "4.3.5",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
