@@ -4,10 +4,10 @@ const cors = require("cors");
 
 const db = require('./config/db.js');
 
-const authMiddleware = require('./middleware/authMiddleware');
+const authMiddleware = require('./middleware/authMiddleware.js');
 
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes.js');
+const userRoutes = require('./routes/userRoutes.js');
 
 const app = express();
 
