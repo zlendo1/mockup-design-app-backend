@@ -1,3 +1,5 @@
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'local'}` });
+
 const express = require('express');
 const session = require('express-session');
 const cors = require("cors");
