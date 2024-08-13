@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const cors = require("cors");
 
-//const db = require('./config/db.js');
+const db = require('./config/db.js');
 
 const authMiddleware = require('./middleware/authMiddleware.js');
 
@@ -24,7 +24,7 @@ app.use(cors());
 app.use('/auth', authRoutes);
 app.use('/user', authMiddleware.verifyJWT, userRoutes);
 
-//db.sequelize.sync();
+db.sequelize.sync();
 
 const PORT = process.env.PORT || 3000;
 
