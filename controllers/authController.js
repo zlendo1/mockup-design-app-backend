@@ -37,6 +37,12 @@ async function register(req, res) {
 	const user = req.body;
 
 	try {
+		if (user.password.length < 8) {
+			res.status(400).json({ message: 'Password must be at least 8 characters long' });
+
+			return;
+		}
+
 		const foundUser = await db.user.findOne({ where: { username: user.username } });
 
 		if (foundUser) {
