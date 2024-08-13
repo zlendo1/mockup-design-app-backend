@@ -22,7 +22,7 @@ async function login(req, res) {
 		const match = await bcrypt.compare(user.password, foundUser.password);
 
 		if (match) {
-			const token = generateJwtToken(foundUser);
+			const token = generateJwtToken(foundUser.toJSON());
 
 			res.status(200).json({ userId: foundUser.id, token: token });
 		} else {
@@ -58,7 +58,7 @@ async function register(req, res) {
 			password: hashedPassword
 		});
 
-		const token = generateJwtToken(newUser);
+		const token = generateJwtToken(newUser.toJSON());
 
 		res.status(201).json({ userId: newUser.id, token: token });
 	} catch (error) {
