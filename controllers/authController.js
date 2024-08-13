@@ -6,7 +6,7 @@ const generateJwtToken = require('./jwtController.js');
 const { generateServerErrorResponse } = require('../utils/messages.js');
 
 async function login(req, res) {
-	const user = req.user;
+	const user = req.body;
 
 	const whereCondition = { username: user.username };
 
@@ -19,7 +19,7 @@ async function login(req, res) {
 			return;
 		}
 
-		const match = await bcrypt.compare(req.body.password, foundUser.password);
+		const match = await bcrypt.compare(user.password, foundUser.password);
 
 		if (match) {
 			const token = generateJwtToken(foundUser);
