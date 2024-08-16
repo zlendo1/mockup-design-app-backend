@@ -19,7 +19,7 @@ app.use(session({
 	secret: process.env.SESSION_SECRET
 }));
 
-app.use(cors());
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 app.use('/auth', authRoutes);
 app.use('/user', authMiddleware.verifyJWT, userRoutes);
