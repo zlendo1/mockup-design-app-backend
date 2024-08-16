@@ -1,84 +1,96 @@
 const request = require('supertest');
-const app = require('../config/appConfig.js'); // Assuming your Express app is exported from app.js
-const db = require('../config/db.js');
 const bcrypt = require('bcryptjs');
 
-db.sequelize.sync()
+const app = require('../config/appConfig.js'); // Assuming your Express app is exported from app.js
+const db = require('../config/db.js');
 
 describe('Auth Controller', () => {
-  describe('login', () => {
-    it('returns 200 and a token for valid credentials', async () => {
-      const user = { username: 'testuser', password: 'password123' };
-      const hashedPassword = await bcrypt.hash(user.password, 10);
-      await db.user.create({ username: user.username, password: hashedPassword });
+	beforeAll(async () => {
+		jest.clearAllMocks();
+	})
 
-      const response = await request(app)
-        .post('/login')
-        .send(user);
+	describe('login', () => {
+		it('returns 200 and a token for valid credentials', async () => {
+			const user = { username: 'testuser', password: 'password123' };
+			const hashedPassword = await bcrypt.hash(user.password, 10);
 
-      expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('token');
-    });
+			db.user.findOne = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword })
 
-    it('returns 400 for non-existent user', async () => {
-      const user = { username: 'nonexistent', password: 'password123' };
+			const response = await request(app)
+				.post('/login')
+				.send(user);
 
-      const response = await request(app)
-        .post('/login')
-        .send(user);
+			expect(response.status).toBe(200);
+			expect(response.body).toHaveProperty('token');
+		});
 
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe('User not found');
-    });
+		it('returns 400 for non-existent user', async () => {
+			const user = { username: 'nonexistent', password: 'password123' };
 
-    it('returns 400 for invalid password', async () => {
-      const user = { username: 'testuser', password: 'password123' };
-      const hashedPassword = await bcrypt.hash(user.password, 10);
-      await db.user.create({ username: user.username, password: hashedPassword });
+			db.user.findOne = jest.fn().mockResolvedValue(null);
 
-      const response = await request(app)
-        .post('/login')
-        .send({ username: user.username, password: 'wrongpassword' });
+			const response = await request(app)
+				.post('/login')
+				.send(user);
 
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Invalid password');
-    });
-  });
+			expect(response.status).toBe(400);
+			expect(response.body.message).toBe('User not found');
+		});
 
-  describe('register', () => {
-    it('returns 201 and a token for valid registration', async () => {
-      const user = { username: 'newuser', password: 'password123' };
+		it('returns 400 for invalid password', async () => {
+			const user = { username: 'testuser', password: 'password123' };
+			const hashedPassword = await bcrypt.hash(user.password, 10);
 
-      const response = await request(app)
-        .post('/register')
-        .send(user);
+			db.user.findOne = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword });
 
-      expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty('token');
-    });
+			const response = await request(app)
+				.post('/login')
+				.send({ username: user.username, password: 'wrongpassword' });
 
-    it('returns 400 for short password', async () => {
-      const user = { username: 'newuser', password: 'short' };
+			expect(response.status).toBe(400);
+			expect(response.body.message).toBe('Invalid password');
+		});
+	});
 
-      const response = await request(app)
-        .post('/register')
-        .send(user);
+	describe('register', () => {
+		it('returns 201 and a token for valid registration', async () => {
+			const user = { username: 'newuser', password: 'password123' };
+			const hashedPassword = await bcrypt.hash(user.password, 10);
 
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Password must be at least 8 characters long');
-    });
+			db.user.findOne = jest.fn().mockResolvedValue(null);
+			db.user.create = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword });
 
-    it('returns 400 for existing user', async () => {
-      const user = { username: 'existinguser', password: 'password123' };
-      const hashedPassword = await bcrypt.hash(user.password, 10);
-      await db.user.create({ username: user.username, password: hashedPassword });
+			const response = await request(app)
+				.post('/register')
+				.send(user);
 
-      const response = await request(app)
-        .post('/register')
-        .send(user);
+			expect(response.status).toBe(201);
+			expect(response.body).toHaveProperty('token');
+		});
 
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe('User already exists');
-    });
-  });
+		it('returns 400 for short password', async () => {
+			const user = { username: 'newuser', password: 'short' };
+
+			const response = await request(app)
+				.post('/register')
+				.send(user);
+
+			expect(response.status).toBe(400);
+			expect(response.body.message).toBe('Password must be at least 8 characters long');
+		});
+
+		it('returns 400 for existing user', async () => {
+			const user = { username: 'existinguser', password: 'password123' };
+			const hashedPassword = await bcrypt.hash(user.password, 10);
+
+			db.user.findOne = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword });
+
+			const response = await request(app)
+				.post('/register')
+				.send(user);
+
+			expect(response.status).toBe(400);
+			expect(response.body.message).toBe('User already exists');
+		});
+	});
 });
