@@ -17,7 +17,7 @@ describe('Auth Controller', () => {
 			db.user.findOne = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword })
 
 			const response = await request(app)
-				.post('/login')
+				.post('/auth/login')
 				.send(user);
 
 			expect(response.status).toBe(200);
@@ -30,7 +30,7 @@ describe('Auth Controller', () => {
 			db.user.findOne = jest.fn().mockResolvedValue(null);
 
 			const response = await request(app)
-				.post('/login')
+				.post('/auth/login')
 				.send(user);
 
 			expect(response.status).toBe(400);
@@ -44,7 +44,7 @@ describe('Auth Controller', () => {
 			db.user.findOne = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword });
 
 			const response = await request(app)
-				.post('/login')
+				.post('/auth/login')
 				.send({ username: user.username, password: 'wrongpassword' });
 
 			expect(response.status).toBe(400);
@@ -61,7 +61,7 @@ describe('Auth Controller', () => {
 			db.user.create = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword });
 
 			const response = await request(app)
-				.post('/register')
+				.post('/auth/register')
 				.send(user);
 
 			expect(response.status).toBe(201);
@@ -72,7 +72,7 @@ describe('Auth Controller', () => {
 			const user = { username: 'newuser', password: 'short' };
 
 			const response = await request(app)
-				.post('/register')
+				.post('/auth/register')
 				.send(user);
 
 			expect(response.status).toBe(400);
@@ -86,7 +86,7 @@ describe('Auth Controller', () => {
 			db.user.findOne = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword });
 
 			const response = await request(app)
-				.post('/register')
+				.post('/auth/register')
 				.send(user);
 
 			expect(response.status).toBe(400);
