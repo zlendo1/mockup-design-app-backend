@@ -14,7 +14,7 @@ describe('Auth Controller', () => {
 			const user = { username: 'testuser', password: 'password123' };
 			const hashedPassword = await bcrypt.hash(user.password, 10);
 
-			db.user.findOne = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword })
+			db.user.findOne = jest.fn().mockResolvedValue(db.user.build({ id: 1, username: user.username, password: hashedPassword }));
 
 			const response = await request(app)
 				.post('/auth/login')
@@ -41,7 +41,7 @@ describe('Auth Controller', () => {
 			const user = { username: 'testuser', password: 'password123' };
 			const hashedPassword = await bcrypt.hash(user.password, 10);
 
-			db.user.findOne = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword });
+			db.user.findOne = jest.fn().mockResolvedValue(db.user.build({ id: 1, username: user.username, password: hashedPassword }));
 
 			const response = await request(app)
 				.post('/auth/login')
@@ -58,7 +58,7 @@ describe('Auth Controller', () => {
 			const hashedPassword = await bcrypt.hash(user.password, 10);
 
 			db.user.findOne = jest.fn().mockResolvedValue(null);
-			db.user.create = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword });
+			db.user.create = jest.fn().mockResolvedValue(db.user.build({ id: 1, username: user.username, password: hashedPassword }));
 
 			const response = await request(app)
 				.post('/auth/register')
@@ -83,7 +83,7 @@ describe('Auth Controller', () => {
 			const user = { username: 'existinguser', password: 'password123' };
 			const hashedPassword = await bcrypt.hash(user.password, 10);
 
-			db.user.findOne = jest.fn().mockResolvedValue({ username: user.username, password: hashedPassword });
+			db.user.findOne = jest.fn().mockResolvedValue(db.user.build({ id: 1, username: user.username, password: hashedPassword }));
 
 			const response = await request(app)
 				.post('/auth/register')
