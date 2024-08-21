@@ -1,4 +1,4 @@
-const jwtHelper = require('../utils/jwtHelper.js');
+const jwtHelper = require('../utils/jwtHelper.js')
 
 /**
  * Generates a JWT token for a given user.
@@ -9,11 +9,11 @@ const jwtHelper = require('../utils/jwtHelper.js');
  * @returns {string} The generated JWT token.
  */
 function generateJwtToken(user) {
-    const username = user.username;
-    const id = user.id;
+    const username = user.username
+    const id = user.id
 
     // Sign the JWT token with the user id and username, and set it to expire in 1 day
-    return jwtHelper.sign({ id, username }, { expiresIn: '30m' });
+    return jwtHelper.sign({ id, username }, { expiresIn: '30m' })
 }
 
-module.exports = generateJwtToken;
+module.exports = generateJwtToken

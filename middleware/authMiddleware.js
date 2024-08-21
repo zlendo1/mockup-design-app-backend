@@ -1,4 +1,4 @@
-const jwtHelper = require('../utils/jwtHelper.js');
+const jwtHelper = require('../utils/jwtHelper.js')
 
 /**
  * Middleware to verify the JWT token from the request headers.
@@ -9,18 +9,21 @@ const jwtHelper = require('../utils/jwtHelper.js');
  * @param {Function} next - The next middleware function.
  */
 const verifyJWT = (req, res, next) => {
-	try {
-		const token = req.headers["authorization"];
-		const decoded = jwtHelper.verify(token);
+    try {
+        const token = req.headers['authorization']
+        const decoded = jwtHelper.verify(token)
 
-		req.headers["Authorization"] = jwtHelper.sign({ ...decoded, exp: decoded.exp + (30 * 60) });
+        req.headers['Authorization'] = jwtHelper.sign({
+            ...decoded,
+            exp: decoded.exp + 30 * 60,
+        })
 
-		req.userData = decoded;
+        req.userData = decoded
 
-		next();
-	} catch (error) {
-		return res.status(401).json({ message: 'Auth failed' });
-	}
+        next()
+    } catch (error) {
+        return res.status(401).json({ message: 'Auth failed' })
+    }
 }
 
 /**
@@ -30,17 +33,17 @@ const verifyJWT = (req, res, next) => {
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-const addJwtHeader = (req,res,next) => {
-	res.setHeader('Access-Control-Allow-Origin', '*');
+const addJwtHeader = (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
 
-	res.setHeader('Access-Control-Expose-Headers', 'Authorization');
+    res.setHeader('Access-Control-Expose-Headers', 'Authorization')
 
-	res.setHeader('Authorization', `${req.headers["Authorization"]}`);
+    res.setHeader('Authorization', `${req.headers['Authorization']}`)
 
-	next();
+    next()
 }
 
 module.exports = {
-	verifyJWT,
-	addJwtHeader
+    verifyJWT,
+    addJwtHeader,
 }

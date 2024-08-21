@@ -1,13 +1,13 @@
-const express = require('express');
+const express = require('express')
 
-const router = express.Router();
+const router = express.Router()
 
-const userController = require('../controllers/userController.js');
+const userController = require('../controllers/userController.js')
 
-const authMiddleware = require('../middleware/authMiddleware.js');
+const authMiddleware = require('../middleware/authMiddleware.js')
 
-router.use(authMiddleware.addJwtHeader);
+router.use(authMiddleware.addJwtHeader)
 
-router.get('/user', userController.getUser);
+router.get('/user', userController.getUser)
 
-module.exports = router;
+module.exports = router

@@ -1,12 +1,12 @@
-const app = require('./config/appConfig.js');
-const db = require('./config/db.js');
+const app = require('./config/appConfig.js')
+const db = require('./config/db.js')
 
-db.sequelize.sync();
+db.sequelize.sync()
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-	console.log(`Server is running on port http://localhost:${PORT}/`);
-});
+    console.log(`Server is running on port http://localhost:${PORT}/`)
+})
 
-module.exports = app;
+module.exports = app

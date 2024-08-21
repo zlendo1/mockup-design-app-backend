@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 
 /**
  * This function signs a payload with the JWT secret key.
@@ -10,11 +10,11 @@ const jwt = require('jsonwebtoken');
  * @returns {string} The JWT token.
  */
 function sign(payload, options = null) {
-	if (!options) {
-		return jwt.sign(payload, process.env.JWT_SECRET);
-	}
+    if (!options) {
+        return jwt.sign(payload, process.env.JWT_SECRET)
+    }
 
-	return jwt.sign(payload, process.env.JWT_SECRET, options);
+    return jwt.sign(payload, process.env.JWT_SECRET, options)
 }
 
 /**
@@ -25,10 +25,10 @@ function sign(payload, options = null) {
  * @throws {Error} If the token is not valid.
  */
 function verify(token) {
-	return jwt.verify(token, process.env.JWT_SECRET);
+    return jwt.verify(token, process.env.JWT_SECRET)
 }
 
 module.exports = {
-	sign,
-	verify
-};
+    sign,
+    verify,
+}
