@@ -1,4 +1,4 @@
-require('dotenv').config({ path: [`.env`, `.env.${process.env.NODE_ENV}`, `.env.${process.env.NODE_ENV}.local`] });
+require('dotenv').config({ path: [`.env`, `.env.local`, `.env.${process.env.NODE_ENV}`, `.env.${process.env.NODE_ENV}.local`] });
 
 const express = require('express');
 const session = require('express-session');
