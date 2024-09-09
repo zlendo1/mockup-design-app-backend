@@ -13,5 +13,9 @@ db.Sequelize = Sequelize
 db.sequelize = sequelize
 
 db.user = require('../models/User.js')(sequelize, Sequelize)
+db.project = require('../models/Project.js')(sequelize, Sequelize)
+
+db.project.hasOne(db.user)
+db.user.hasMany(db.project)
 
 module.exports = db

@@ -15,6 +15,7 @@ const authMiddleware = require('../middleware/authMiddleware.js')
 
 const authRoutes = require('../routes/authRoutes.js')
 const userRoutes = require('../routes/userRoutes.js')
+const projectRoutes = require('../routes/projectRoutes.js')
 
 const app = express()
 
@@ -32,5 +33,6 @@ app.use(cors({ origin: process.env.FRONTEND_URL }))
 
 app.use('/auth', authRoutes)
 app.use('/user', authMiddleware.verifyJWT, userRoutes)
+app.use('/project', authMiddleware.verifyJWT, projectRoutes)
 
 module.exports = app
