@@ -46,7 +46,7 @@ async function createProject(req, res) {
 	const project = req.body
 
 	try {
-		const newProject = await db.project.create({
+		const [newProject, _] = await db.project.upsert({
 			...project,
 			UserId: userId,
 		})
