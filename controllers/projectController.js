@@ -6,7 +6,7 @@ async function getProjects(req, res) {
 	const userId = req.userData.id
 
 	try {
-		const projects = await db.project.findAll({ where: { userId: userId } })
+		const projects = await db.project.findAll({ where: { UserId: userId } })
 
 		res.status(200).json(projects)
 	} catch (error) {
@@ -15,11 +15,11 @@ async function getProjects(req, res) {
 }
 
 async function getProjectNames(req, res) {
-	const userId = req.userId.id
+	const userId = req.userData.id
 
 	try {
 		const projects = await db.project.findAll({
-			where: { userId: userId },
+			where: { UserId: userId },
 			attributes: ['id', 'name'],
 		})
 
@@ -48,7 +48,7 @@ async function createProject(req, res) {
 	try {
 		const newProject = await db.project.create({
 			...project,
-			userId: userId,
+			UserId: userId,
 		})
 
 		res.status(201).json(newProject)
