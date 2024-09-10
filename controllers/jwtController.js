@@ -13,7 +13,7 @@ function generateJwtToken(user) {
 	const id = user.id
 
 	// Sign the JWT token with the user id and username, and set it to expire in 1 day
-	return jwtHelper.sign({ id, username }, { expiresIn: '30m' })
+	return jwtHelper.sign({ id, username }, { expiresIn: '1d' })
 }
 
 module.exports = generateJwtToken
