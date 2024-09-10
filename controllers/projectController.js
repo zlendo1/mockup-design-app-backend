@@ -14,6 +14,33 @@ async function getProjects(req, res) {
 	}
 }
 
+async function getProjectNames(req, res) {
+	const userId = req.userId.id
+
+	try {
+		const projects = await db.project.findAll({
+			where: { userId: userId },
+			attributes: ['id', 'name'],
+		})
+
+		res.status(200).json(projects)
+	} catch (error) {
+		res.status(500).json(generateServerErrorResponse(error))
+	}
+}
+
+async function getProject(req, res) {
+	const projectId = req.params.id
+
+	try {
+		const project = await db.project.findOne({ where: { id: projectId } })
+
+		res.status(200).json(project)
+	} catch (error) {
+		res.status(500).json(generateServerErrorResponse(error))
+	}
+}
+
 async function createProject(req, res) {
 	const userId = req.userData.id
 	const project = req.body
@@ -60,6 +87,8 @@ async function deleteProject(req, res) {
 
 module.exports = {
 	getProjects,
+	getProjectNames,
+	getProject,
 	createProject,
 	updateProject,
 	deleteProject,
